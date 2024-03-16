@@ -1,4 +1,3 @@
-README.md
 cli.py
 setup.py
 ic.egg-info/PKG-INFO
