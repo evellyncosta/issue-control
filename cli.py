@@ -1,8 +1,17 @@
 # cli.py
-
+import shutil
 import subprocess
 import sys
 
+def check_gh_installed():
+    return shutil.which("gh") is not None
+
+def check_gh_logged_in():
+    try:
+        subprocess.run(["gh", "auth", "status"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return True
+    except subprocess.CalledProcessError:
+        return False
 def fix_snyk():
     print("Iniciando criação da issue...")
 
@@ -43,6 +52,14 @@ def teste():
     print("Hello, world!")
 
 def main():
+    if not check_gh_installed():
+        print("GitHub CLI (gh) não está instalado. Por favor, instale-o e tente novamente.")
+        sys.exit(1)
+
+    if not check_gh_logged_in():
+        print("Você não está logado no GitHub CLI (gh). Por favor, faça login e tente novamente.")
+        sys.exit(1)
+
     if len(sys.argv) < 2:
         print("Uso: ic <comando>")
         sys.exit(1)
